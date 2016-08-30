@@ -10,4 +10,147 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.siblea.distancecalculator.MainActivity">
 
+    <TextView
+        android:id="@+id/user_location_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="YOUR LOCATION"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/user_long_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_location_title"
+        android:layout_marginTop="16dp"
+        android:text="LONG: "
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/user_long"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_location_title"
+        android:layout_marginTop="16dp"
+        android:layout_toEndOf="@+id/user_long_label"
+        android:layout_toRightOf="@+id/user_long_label"
+        android:text="-22.38263"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/user_lat_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_location_title"
+        android:layout_marginTop="16dp"
+        android:layout_toLeftOf="@+id/user_lat"
+        android:layout_toStartOf="@+id/user_lat"
+        android:text="LAT: "
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/user_lat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/user_location_title"
+        android:layout_marginTop="16dp"
+        android:text="-46.93717"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/user_destination_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_lat_label"
+        android:layout_marginTop="64dp"
+        android:gravity="center"
+        android:text="YOUR DESTIONATION"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/destination_lat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_destination_title"
+        android:hint="Type Latitude" />
+
+    <EditText
+        android:id="@+id/destination_long"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/destination_lat"
+        android:hint="Type Longitude" />
+
+    <LinearLayout
+        android:id="@+id/calculations_containter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/destination_long"
+        android:layout_marginTop="64dp"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:id="@+id/disrance_meters_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_directions_car_black_24dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:gravity="center_vertical"
+                android:text="32.5km" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/disrance_time_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_access_time_black_24dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:gravity="center_vertical"
+                android:text="01:45" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/calculate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Calculate distance" />
+
 </RelativeLayout>
