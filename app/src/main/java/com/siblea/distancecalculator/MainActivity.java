@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +30,8 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private static final int REQUEST_LOCATION_PERMISION_REQUEST_CODE = 123;
+    private static final String LATITUDE_PATTERN = "^(\\+|-)?(?:90(?:(?:\\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\\.[0-9]{1,6})?))$";
+    private static final String LONGITUDE_PATTERN = "^(\\+|-)?(?:180(?:(?:\\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\\.[0-9]{1,6})?))$";
 
     @BindView(R.id.distance)
     TextView distance;
@@ -41,6 +44,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @BindView(R.id.user_lat)
     TextView userLatitude;
+
+    @BindView(R.id.destination_lat)
+    EditText destinationLat;
+
+    @BindView(R.id.destination_long)
+    EditText destinationLong;
 
     @BindView(R.id.calculations_containter)
     LinearLayout calculationsContainer;
@@ -80,27 +89,58 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @OnClick(R.id.calculate)
     public void calculate() {
-        GoogleDistanceMatrixAPI.GoogleDistanceMatrixService gdmAPI = GoogleDistanceMatrixAPI.getInstance();
-        Call<DistanceMatrixReturn> paths = gdmAPI.get(
-                getCurrentLocation(),
-                new GoogleDistanceMatrixAPI.Place(-47.06361, -22.91079),
-                "AIzaSyCHeuumo6FhrrBKoXqXAoqusqUFEHJYjHg");
+        if (validadeFields()) {
+            calculationsContainer.setVisibility(View.GONE);
 
-        paths.enqueue(new Callback<DistanceMatrixReturn>() {
+            GoogleDistanceMatrixAPI.GoogleDistanceMatrixService gdmAPI = GoogleDistanceMatrixAPI.getInstance();
+            Call<DistanceMatrixReturn> paths = gdmAPI.get(
+                    getCurrentLocation(),
+                    getDestination(),
+                    "AIzaSyCHeuumo6FhrrBKoXqXAoqusqUFEHJYjHg");
 
-            @Override
-            public void onResponse(Call<DistanceMatrixReturn> call, Response<DistanceMatrixReturn> response) {
-                DistanceMatrixReturn distanceMatrix = response.body();
-                duration.setText(distanceMatrix.getDurationString());
-                distance.setText(distanceMatrix.getDistanceString());
-                calculationsContainer.setVisibility(View.VISIBLE);
-            }
+            paths.enqueue(new Callback<DistanceMatrixReturn>() {
 
-            @Override
-            public void onFailure(Call<DistanceMatrixReturn> call, Throwable t) {
-                Toast.makeText(getBaseContext(), "FUDEU", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onResponse(Call<DistanceMatrixReturn> call, Response<DistanceMatrixReturn> response) {
+                    try {
+                        DistanceMatrixReturn distanceMatrix = response.body();
+                        duration.setText(distanceMatrix.getDurationString());
+                        distance.setText(distanceMatrix.getDistanceString());
+                        calculationsContainer.setVisibility(View.VISIBLE);
+                    } catch (NullPointerException npe) {
+                        Snackbar.make(findViewById(R.id.activity_main), "Unable to find path!", Snackbar.LENGTH_INDEFINITE).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<DistanceMatrixReturn> call, Throwable t) {
+                    Toast.makeText(getBaseContext(), "FUDEU", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private GoogleDistanceMatrixAPI.Place getDestination() {
+        double longitude = Double.parseDouble(destinationLong.getText().toString());
+        double latitude = Double.parseDouble(destinationLat.getText().toString());
+
+        return new GoogleDistanceMatrixAPI.Place(longitude, latitude);
+    }
+
+    private boolean validateFields() {
+        boolean isValid = true;
+
+        if (!destinationLat.getText().toString().matches(LATITUDE_PATTERN)) {
+            destinationLat.setError("Invalid Latitude");
+            isValid = false;
+        }
+
+        if (!destinationLong.getText().toString().matches(LONGITUDE_PATTERN)) {
+            destinationLong.setError("Invalid Longitude");
+            isValid = false;
+        }
+
+        return isValid;
     }
 
     private GoogleDistanceMatrixAPI.Place getCurrentLocation() {
