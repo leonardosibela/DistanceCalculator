@@ -77,28 +77,29 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/destination_lat"
+            android:id="@+id/destination_long"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/user_destination_title"
-            android:hint="Type Latitude"
+            android:hint="Type Longitude"
             android:inputType="numberSigned|numberDecimal"
             android:maxLines="1" />
 
         <EditText
-            android:id="@+id/destination_long"
+            android:id="@+id/destination_lat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/destination_lat"
-            android:hint="Type Longitude"
+            android:layout_below="@+id/destination_long"
+            android:hint="Type Latitude"
             android:inputType="numberSigned|numberDecimal"
             android:maxLines="1" />
+
 
         <LinearLayout
             android:id="@+id/calculations_containter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/destination_long"
+            android:layout_below="@+id/destination_lat"
             android:layout_marginTop="64dp"
             android:orientation="horizontal"
             android:visibility="gone"
