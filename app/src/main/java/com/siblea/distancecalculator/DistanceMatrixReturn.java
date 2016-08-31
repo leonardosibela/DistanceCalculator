@@ -14,11 +14,11 @@ public class DistanceMatrixReturn {
     }
 
     public String getDurationString() {
-        double durationInMinutes = rows.get(0).getElements().get(0).getDuration().getValue();
-        int hour = (int) durationInMinutes / 3600;
-        int minute = (int) Math.round((durationInMinutes / 3600 - hour) * 100);
+        int t = (int) rows.get(0).getElements().get(0).getDuration().getValue();
+        int hours = t / 3600;
+        int minutes = (t % 3600) / 60;
 
         DecimalFormat df = new DecimalFormat("00");
-        return df.format(hour) + ":" + df.format(minute);
+        return df.format(hours) + ":" + df.format(minutes);
     }
 }
