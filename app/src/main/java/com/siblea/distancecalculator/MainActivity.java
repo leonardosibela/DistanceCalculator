@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +41,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @BindView(R.id.user_lat)
     TextView userLatitude;
+
+    @BindView(R.id.calculations_containter)
+    LinearLayout calculationsContainer;
 
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
@@ -89,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 DistanceMatrixReturn distanceMatrix = response.body();
                 duration.setText(distanceMatrix.getDurationString());
                 distance.setText(distanceMatrix.getDistanceString());
+                calculationsContainer.setVisibility(View.VISIBLE);
             }
 
             @Override
