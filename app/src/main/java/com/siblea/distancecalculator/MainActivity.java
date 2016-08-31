@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
-    private boolean mRequestingLocationUpdates = true;
     private LocationRequest mLocationRequest;
 
     @Override
@@ -79,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public void calculate() {
         GoogleDistanceMatrixAPI.GoogleDistanceMatrixService gdmAPI = GoogleDistanceMatrixAPI.getInstance();
         Call<DistanceMatrixReturn> paths = gdmAPI.get(
-                new GoogleDistanceMatrixAPI.Place(-46.93717, -22.38263),
+                getCurrentLocation(),
                 new GoogleDistanceMatrixAPI.Place(-47.06361, -22.91079),
                 "AIzaSyCHeuumo6FhrrBKoXqXAoqusqUFEHJYjHg");
 
@@ -99,14 +98,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         });
     }
 
+    private GoogleDistanceMatrixAPI.Place getCurrentLocation() {
+        return new GoogleDistanceMatrixAPI.Place(mLastLocation.getLongitude(), mLastLocation.getLatitude());
+    }
+
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        if (mRequestingLocationUpdates) {
-            startLocationUpdates();
-        }
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             askForLocationPermission();
         } else {
+            startLocationUpdates();
             setLongAndLat();
         }
     }
@@ -119,7 +120,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     protected void startLocationUpdates() {
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        }
     }
 
     private void askForLocationPermission() {
@@ -153,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             case REQUEST_LOCATION_PERMISION_REQUEST_CODE: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     setLongAndLat();
+                    startLocationUpdates();
                 } else {
                     displayLocationPermissionSnack();
                 }
