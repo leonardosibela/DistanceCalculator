@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Distance Calculator</string>
+    <string name="location_permission_message">Location Permission Required!</string>
+    <string name="location_permission_action">RETRY</string>
 </resources>
