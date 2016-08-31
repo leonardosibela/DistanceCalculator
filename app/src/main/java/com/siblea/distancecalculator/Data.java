@@ -10,4 +10,8 @@ public class Data {
     public double getValue() {
         return value;
     }
+
+    public String getText() {
+        return text;
+    }
 }
