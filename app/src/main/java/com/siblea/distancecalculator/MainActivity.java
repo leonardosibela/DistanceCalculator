@@ -1,5 +1,6 @@
 package com.siblea.distancecalculator;
 
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,6 +26,7 @@ import com.google.android.gms.location.LocationServices;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnEditorAction;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -89,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @OnClick(R.id.calculate)
     public void calculate() {
-        if (validadeFields()) {
+        if (validateFields()) {
             calculationsContainer.setVisibility(View.GONE);
 
             GoogleDistanceMatrixAPI.GoogleDistanceMatrixService gdmAPI = GoogleDistanceMatrixAPI.getInstance();
@@ -128,19 +132,47 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private boolean validateFields() {
-        boolean isValid = true;
+        return validateLatitude() && validateLongitude();
+    }
 
+    @OnEditorAction(R.id.destination_lat)
+    public boolean destinationLatitudeEditorAction(int actionId) {
+        if (actionId == EditorInfo.IME_ACTION_NEXT) {
+            if (validateLatitude())
+                destinationLong.requestFocus();
+            return true;
+        }
+        return false;
+    }
+
+    private boolean validateLatitude() {
         if (!destinationLat.getText().toString().matches(LATITUDE_PATTERN)) {
             destinationLat.setError("Invalid Latitude");
-            isValid = false;
+            return false;
         }
 
+        return true;
+    }
+
+    @OnEditorAction(R.id.destination_long)
+    public boolean destinationLongitudeEditorAction(TextView view, int actionId) {
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+            if (validateLongitude()) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private boolean validateLongitude() {
         if (!destinationLong.getText().toString().matches(LONGITUDE_PATTERN)) {
             destinationLong.setError("Invalid Longitude");
-            isValid = false;
+            return false;
         }
 
-        return isValid;
+        return true;
     }
 
     private GoogleDistanceMatrixAPI.Place getCurrentLocation() {
