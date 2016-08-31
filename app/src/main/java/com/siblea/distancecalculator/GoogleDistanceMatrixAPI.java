@@ -41,14 +41,14 @@ public class GoogleDistanceMatrixAPI {
         private double latitude;
         private double longitude;
 
-        public Place(double latitude, double longitude) {
+        public Place(double longitude, double latitude) {
             this.latitude = latitude;
             this.longitude = longitude;
         }
 
         @Override
         public String toString() {
-            return longitude + "," + latitude;
+            return latitude + "," + longitude;
         }
     }
 }

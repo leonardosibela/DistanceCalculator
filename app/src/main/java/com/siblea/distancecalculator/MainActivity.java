@@ -28,7 +28,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private static final int REQUEST_LOCATION_PERMISION_REQUEST_CODE = 123;
-    
+
     @BindView(R.id.distance)
     TextView distance;
 
