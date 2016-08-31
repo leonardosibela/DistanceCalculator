@@ -10,15 +10,14 @@ import retrofit2.http.Query;
 
 public class GoogleDistanceMatrixAPI {
 
-    private static final String ENDPOINT_URL = "https://maps.googleapis.com/maps/api/distancematrix/json";
+    private static final String ENDPOINT_URL = "https://maps.googleapis.com/";
 
     private static GoogleDistanceMatrixService googleDistanceMatrixService;
 
     public interface GoogleDistanceMatrixService {
 
-        @GET()
-        Call<DistanceMatrixReturn> getUsers(@Query("origins") Place origin, @Query("destinations") Place destination);
-
+        @GET("maps/api/distancematrix/json")
+        Call<DistanceMatrixReturn> get(@Query("origins") Place origin, @Query("destinations") Place destination, @Query("key") String key);
     }
 
     public static GoogleDistanceMatrixService getInstance() {
