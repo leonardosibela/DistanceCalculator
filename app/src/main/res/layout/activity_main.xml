@@ -111,6 +111,7 @@
                 android:src="@drawable/ic_directions_car_black_24dp" />
 
             <TextView
+                android:id="@+id/distance"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="8dp"
@@ -135,6 +136,7 @@
                 android:src="@drawable/ic_access_time_black_24dp" />
 
             <TextView
+                android:id="@+id/duration"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="8dp"
