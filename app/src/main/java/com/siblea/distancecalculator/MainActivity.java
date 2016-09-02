@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             Call<DistanceMatrixReturn> paths = gdmAPI.get(
                     getCurrentLocation(),
                     getDestination(),
-                    "AIzaSyCHeuumo6FhrrBKoXqXAoqusqUFEHJYjHg");
+                    BuildConfig.API_KEY);
 
             paths.enqueue(new Callback<DistanceMatrixReturn>() {
 
@@ -112,13 +112,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                         distance.setText(distanceMatrix.getDistanceString());
                         calculationsContainer.setVisibility(View.VISIBLE);
                     } catch (NullPointerException npe) {
-                        Snackbar.make(findViewById(R.id.activity_main), "Unable to find path!", Snackbar.LENGTH_INDEFINITE).show();
+                        Snackbar.make(findViewById(R.id.activity_main), R.string.unable_find_path, Snackbar.LENGTH_INDEFINITE).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<DistanceMatrixReturn> call, Throwable t) {
-                    Toast.makeText(getBaseContext(), "FUDEU", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), R.string.an_error_occurred, Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -147,10 +147,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private boolean validateLatitude() {
         if (!destinationLat.getText().toString().matches(LATITUDE_PATTERN)) {
-            destinationLat.setError("Invalid Latitude");
+            destinationLat.setError(getString(R.string.invalid_latitude));
             return false;
         }
-
         return true;
     }
 
@@ -168,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private boolean validateLongitude() {
         if (!destinationLong.getText().toString().matches(LONGITUDE_PATTERN)) {
-            destinationLong.setError("Invalid Longitude");
+            destinationLong.setError(getString(R.string.invalid_longitude));
             return false;
         }
 

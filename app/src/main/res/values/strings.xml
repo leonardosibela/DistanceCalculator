@@ -2,4 +2,8 @@
     <string name="app_name">Distance Calculator</string>
     <string name="location_permission_message">Location Permission Required!</string>
     <string name="location_permission_action">RETRY</string>
+    <string name="unable_find_path">Unable to find path!</string>
+    <string name="an_error_occurred">An error occurred</string>
+    <string name="invalid_latitude">Invalid Latitude</string>
+    <string name="invalid_longitude">Invalid Longitude</string>
 </resources>
